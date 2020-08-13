@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Password Encryption</string>
+    <string name="enter_text_to_encrypt">Enter text to encrypt</string>
+    <string name="enter_encrypt_password">Enter encrypt password</string>
+    <string name="decrypt">decrypt</string>
+    <string name="encrypt">encrypt</string>
+    <string name="output_text">Output Text</string>
+</resources>
