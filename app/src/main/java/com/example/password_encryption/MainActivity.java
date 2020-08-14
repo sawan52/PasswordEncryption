@@ -18,7 +18,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText textEncrypt, encryptPassword;
+    EditText textToEncrypt, key;
     TextView outputText;
     Button encryptButton, decryptButton;
 
@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textEncrypt = findViewById(R.id.text_to_encrypt);
-        encryptPassword = findViewById(R.id.encrypt_pass);
+        textToEncrypt = findViewById(R.id.text_to_encrypt);
+        key = findViewById(R.id.encrypt_pass);
 
         outputText = findViewById(R.id.output_text);
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    outputString = encrypt(textEncrypt.getText().toString(), encryptPassword.getText().toString());
+                    outputString = encrypt(textToEncrypt.getText().toString(), key.getText().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    outputString = decrypt(outputString, encryptPassword.getText().toString());
+                    outputString = decrypt(outputString, key.getText().toString());
                 } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "Wrong Password!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "It looks like encryption/decryption key has been changed!", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
 
@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private String encrypt(String text, String password) throws Exception {
-        SecretKeySpec key = generateKey(password);
+    private String encrypt(String text, String keyPassword) throws Exception {
+        SecretKeySpec key = generateKey(keyPassword);
         Cipher cipher = Cipher.getInstance(AES);
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] encVal = cipher.doFinal(text.getBytes());
@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private SecretKeySpec generateKey(String password) throws Exception {
+    private SecretKeySpec generateKey(String keyPassword) throws Exception {
         final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] bytes = password.getBytes(StandardCharsets.UTF_8);
+        byte[] bytes = keyPassword.getBytes(StandardCharsets.UTF_8);
         digest.update(bytes, 0, bytes.length);
         byte[] key = digest.digest();
 
